@@ -10,8 +10,9 @@ const pathfile = process.env.NODE_EVN + 'App';
 module.exports = {
 	entry: entryfile,
 	output: {
-	    filename: 'index.[hash].js',
-	    path: path.resolve(__dirname, 'dist')
+	    filename: '[name].bundle.js',
+	    path: path.resolve(__dirname, 'dist'),
+	    chunkFilename: '[name].bundle.js',
 	 },
 	plugins: [
 		new CleanWebpackPlugin(['dist']),

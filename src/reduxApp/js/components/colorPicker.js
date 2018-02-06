@@ -155,8 +155,8 @@ export class ColorPicker extends Component{
                         <canvas ref="canvas" width={this.wh} height={this.wh}></canvas>
                         <i style={{top:this.state.y-10, left:this.state.x-10}}></i>
                         <div className="cp-lamp" style={{backgroundColor:rgba}}>
-                            <img src={require("../img/color.png")}/>
-                            <img src={require("../img/color.png")}/>
+                            <img src={require("../../img/color.png")}/>
+                            <img src={require("../../img/color.png")}/>
                         </div>
                     </div>
                 </div>
