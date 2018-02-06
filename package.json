@@ -26,7 +26,10 @@
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "style-loader": "^0.19.1",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.10.0"
@@ -43,5 +46,13 @@
     "redux": "^3.7.2",
     "reflux": "^6.4.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanyanan/change-reflux-to-redux.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lanyanan/change-reflux-to-redux/issues"
+  },
+  "homepage": "https://github.com/lanyanan/change-reflux-to-redux#readme",
   "description": ""
 }

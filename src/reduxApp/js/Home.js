@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addTodo,changeSwitchState,changeLightness, changeColor} from './actions';
+import { addTodo,changeSwitchState,changeLightness, changeColor, selectSubreddit, fetchPostsIfNeeded} from './actions';
 import {ColorPicker} from './colorPicker';
 
 
@@ -16,7 +16,7 @@ class Home extends Component {
         }
     }
     componentDidMount() {
-        
+        this.props.dispatch(fetchPostsIfNeeded(selectSubreddit))
     }
     close() {
         if(!this.props.visibleTodos.lightSwitchState) this.props.dispatch(changeSwitchState(true))
@@ -49,7 +49,7 @@ class Home extends Component {
         let computedStyle = document.defaultView.getComputedStyle(DomPre, null);
         let rgbaString = computedStyle.backgroundColor;
         let rgbArr = (rgbaString.substring(4,rgbaString.length-1)).split(",");
-        this.props.dispatch(changeColor(rgbArr[0],rgbArr[1],rgbArr[2],1,index));
+        this.props.dispatch(changeColor(rgbArr[0],rgbArr[1],rgbArr[2],1,index,this.props.visibleTodos.lightingPatternNumber));
     }
     selectColor() {
         this.setState({
@@ -61,8 +61,14 @@ class Home extends Component {
             colorPickerShow:false
         })
     }
+    changeLightImg() {
+        this.props.dispatch(changeColor(this.props.visibleTodos.R, this.props.visibleTodos.G, this.props.visibleTodos.B, 1, this.props.visibleTodos.i, 0))
+    }
+    changeSceneImg() {
+        this.props.dispatch(changeColor(this.props.visibleTodos.R, this.props.visibleTodos.G, this.props.visibleTodos.B, 1, this.props.visibleTodos.i, 1))
+    }
     changeLampColor(data) {
-        this.props.dispatch(changeColor(data.r,data.g,data.b,1,0));
+        this.props.dispatch(changeColor(data.r,data.g,data.b,1,0,this.props.lightingPatternNumber));
         let colorArr = this.state.colorArray;
         let item = 'rgb('+data.r+","+data.g+","+data.b+")";
         let color = '#' + pad0((data.r).toString(16)) + pad0((data.g).toString(16)) + pad0((data.b).toString(16));
@@ -116,10 +122,10 @@ class Home extends Component {
     endChange(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log(this.initY)
+        //console.log(this.initY)
         let distance = Math.pow(this.initX - window.x, 2) + Math.pow(this.initY - window.y, 2);
         let radius = Math.pow(window.R, 2);
-        console.log(distance,radius);
+        //console.log(distance,radius);
         if ((distance - radius) < 2500 && (distance - radius) > -2500) {
             console.log(9)
             let sin = (this.initY - window.y) / Math.sqrt(distance);
@@ -136,12 +142,17 @@ class Home extends Component {
     render() {
     // 通过调用 connect() 注入:
         const { dispatch, visibleTodos} = this.props;
+        let lightImg = visibleTodos.lightingPatternNumber == 0 ? require("../img/pic-09xxhdpi.png"):require("../img/pic-08xxhdpi.png");
+        let sceneImg = visibleTodos.lightingPatternNumber == 0 ? require("../img/pic-12xxhdpi.png"):require("../img/pic-13xxhdpi.png");
+        let lightColor = visibleTodos.lightingPatternNumber == 0 ? "#1bb1e4":"#919191";
+        let sceneColor = visibleTodos.lightingPatternNumber == 0 ? "#919191":"#1bb1e4";
         let rotate = (visibleTodos.lightness*2.27) < 0 ? 0 : (visibleTodos.lightness*2.27);
         rotate = rotate > 273 ? 273 : rotate;
         let rotateZ = "rotateZ("+rotate+"deg)";
-        let rgba = `rgba(${visibleTodos.R}, ${visibleTodos.G}, ${visibleTodos.B}, 1)`;
         let lightness = visibleTodos.lightness < 0 ? 0 :parseInt((visibleTodos.lightness > 120 ? 120 : visibleTodos.lightness)/1.2);
         console.log(rotateZ)
+        let rgba =visibleTodos.lightingPatternNumber == 0 ? `rgba(210,210,225,1)`:`rgba(${visibleTodos.R}, ${visibleTodos.G}, ${visibleTodos.B}, ${visibleTodos.A})`;
+        console.log(rgba)
         let lampColor = [{pName:"lamp-color-one"},{pName:"lamp-color-two"},{pName:"lamp-color-three"},{pName:"lamp-color-four"},{pName:"lamp-color-five"}]
     return (
       <div className="lamp">
@@ -188,7 +199,7 @@ class Home extends Component {
             <span className="setting-btn">
             </span>                              
         </div>
-        <div className="lamp-color" style={{visibility:"visible"}}>
+        <div className="lamp-color" style={{visibility:visibleTodos.lightingPatternNumber==1?"visible":"hidden"}}>
             {lampColor.map((item,index)=>{
                 if(index==visibleTodos.i){
                     return  <div key={index} className={item.pName} onTouchStart={this.addBackground.bind(this)} style={{background:(this.state.colorArray)[index]}}>
@@ -203,14 +214,14 @@ class Home extends Component {
             <span className="lamp-color-select" onTouchStart={this.selectColor.bind(this)}><img src={require("../img/pic-25xxhdpi.png")}/></span>
         </div>
         <div className="lamp-scene" >
-            <div className="lamp-scene-light lamp-scene-style" >
-                <img src={require("../img/pic-09xxhdpi.png")}/>
-                <h3>照明</h3>    
+            <div className="lamp-scene-light lamp-scene-style" onTouchStart={this.changeLightImg.bind(this)}>
+                <img src={lightImg}/>
+                <h3 style={{color:lightColor}}>照明</h3>    
             </div>
             <div className="lamp-scene-space"></div>
-            <div className="lamp-scene-air lamp-scene-style" >
-                <img src={require("../img/pic-13xxhdpi.png")}/>
-                <h3>氛围</h3>        
+            <div className="lamp-scene-air lamp-scene-style" onTouchStart={this.changeSceneImg.bind(this)}>
+                <img src={sceneImg}/>
+                <h3 style={{color:sceneColor}}>氛围</h3>        
             </div>
         </div>
         <div className ="home-on"  style={{bottom:this.props.visibleTodos.lightSwitchState?"-70%":"0"}}>
@@ -235,7 +246,8 @@ class Home extends Component {
 function select(state) {
   console.log(state)
   return {
-    visibleTodos: state.todos
+    visibleTodos: state.todos,
+    list: state.selectedSubreddit
   };
 }
 

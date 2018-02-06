@@ -5,12 +5,21 @@
  * @type {store}
  */
 import { combineReducers } from 'redux'
-import { ADD_TODO, COMPLETE_TODO,CHANGE_LIGHT_SWITCH, SET_VISIBILITY_FILTER, VisibilityFilters,CHANGE_LIGHT_LIGHTNESS, CHANGE_LIGHT_COLOR } from './actions'
+import { ADD_TODO, COMPLETE_TODO,CHANGE_LIGHT_SWITCH,
+  SET_VISIBILITY_FILTER, VisibilityFilters,CHANGE_LIGHT_LIGHTNESS, 
+  CHANGE_LIGHT_COLOR, SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT ,
+  REQUEST_POSTS, RECEIVE_POSTS } from './actions'
 const { SHOW_ALL } = VisibilityFilters
 
 let dataTree = {
   lightSwitchState: false,
-  lightness: 0
+  lightness: 0,
+  R:0,
+  G:0,
+  B:0,
+  A:1,
+  i:0,
+  lightingPatternNumber:0
 }
 
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -21,7 +30,53 @@ function visibilityFilter(state = SHOW_ALL, action) {
       return state
   }
 }
+function selectedSubreddit(state = 'reactjs', action) {
+  switch (action.type) {
+    case SELECT_SUBREDDIT:
+      return action.subreddit
+    default:
+      return state
+  }
+}
+function posts(state = {
+  isFetching: false,
+  didInvalidate: false,
+  items: []
+}, action) {
+  switch (action.type) {
+    case INVALIDATE_SUBREDDIT :
+      return Object.assign({}, state, {
+        didInvalidate: true
+      })
+    case REQUEST_POSTS:
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      })
+    case RECEIVE_POSTS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        items: action.posts,
+        lastUpdated: action.receivedAt
+      })
+    default:
+      return state
+  }
+}
 
+function postsBySubreddit(state = { }, action) {
+  switch (action.type) {
+    case INVALIDATE_SUBREDDIT :
+    case RECEIVE_POSTS:
+    case REQUEST_POSTS:
+      return Object.assign({}, state, {
+        [action.subreddit]: posts(state[action.subreddit], action)
+      })
+    default:
+      return state
+  }
+}
 function todos(state = dataTree, action) {
   switch (action.type) {
     // case ADD_TODO:
@@ -53,8 +108,10 @@ function todos(state = dataTree, action) {
         B: action.B,
         A: action.A,
         i: action.i,
-      });  
-
+        lightingPatternNumber: action.lightingPatternNumber
+      });
+    case RECEIVE_POSTS://请求数据
+      return Object.assign({}, state, action.posts.msg);
     default:
       return state
   }
@@ -62,7 +119,9 @@ function todos(state = dataTree, action) {
 
 const todoApp = combineReducers({
   visibilityFilter,
-  todos
+  todos,
+  selectedSubreddit,
+  postsBySubreddit
 })
 
 export default todoApp
