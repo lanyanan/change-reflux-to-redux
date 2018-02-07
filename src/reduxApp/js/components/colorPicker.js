@@ -4,7 +4,7 @@
  * @prop {function} close   关闭按钮回调函数
  * @prop {function} cb      选择完成时的回调函数
  */
-import {Base64Img} from './base64img';
+import {Base64Img} from './Base64img';
 import React, { Component } from 'react';
 
 export class ColorPicker extends Component{
@@ -150,7 +150,7 @@ export class ColorPicker extends Component{
                         <div className="cp-preview" onTouchStart={this.cancelPicker.bind(this)}>取消</div>
                         <b onTouchStart={this.closePicker.bind(this)} style={{color:"#1bb1e4",fontSize:"16px"}}>确定</b>
                     </div>
-                    <div ref="wrap" className="canvas-wrap" style={{width:this.wh,height:this.wh}} onTouchMove={this.selectColor.bind(this)}
+                    <div ref="wrap" className="canvas-wrap" style={{width:this.wh,height:this.wh,marginLeft:((-this.wh/2)+"px")}} onTouchMove={this.selectColor.bind(this)}
                         onTouchStart={this.selectColor.bind(this)} onTouchEnd={this.submitColor.bind(this)}>
                         <canvas ref="canvas" width={this.wh} height={this.wh}></canvas>
                         <i style={{top:this.state.y-10, left:this.state.x-10}}></i>

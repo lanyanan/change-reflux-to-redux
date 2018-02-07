@@ -417,6 +417,10 @@ body,html {
 	width: 15px;
 	height:15px;
 }
+.canvas-wrap {
+	position: relative;
+    left: 50%;
+}
 .cp-hd {
 	padding:10px 0!important;
 	border-bottom: 1px solid #f0f2f6;
