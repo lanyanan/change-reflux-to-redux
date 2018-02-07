@@ -1,4 +1,4 @@
-# app-h5开发指导文档_V2（试行）
+# react redux webpack  项目
 
 ## 目录
 <!-- MarkdownTOC depth=4 autolink=true bracket=round -->
