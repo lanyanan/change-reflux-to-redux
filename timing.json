@@ -1,0 +1,24 @@
+{
+	"code":"0",
+	"msg":{
+		"timingBtnIsOn":"0",
+        "timingBtnBgClassName":"trunOffBgColor",
+        "timingBtnClassName":"timing-awaken-off",
+        "hours":"00",
+        "minutes":"00",
+        "tips":"",
+        "tipsClassName":"toast-hide",
+        "btnCont":"保存",
+        "hoursIndex":0,
+        "minIndex":0,
+        "state":"",
+        "daySelect":"none",
+        "work":"selected",
+        "week":"",
+        "repeat":"工作日",
+        "music":"timing-setting-music-right-on",
+        "light":"timing-setting-light-right-on",
+        "later":"timing-remind-right-on",
+        "mark":0
+	}        
+}

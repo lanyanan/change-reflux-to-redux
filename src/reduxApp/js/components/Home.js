@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addTodo,changeSwitchState,changeLightness, changeColor, selectSubreddit, fetchPostsIfNeeded} from '../Actions/Actions';
+import { changeSwitchState, changeLightness, changeColor} from '../Actions/HomeAction';
+import { fetchPostsIfNeeded } from '../Actions/FetchAction';
 import {ColorPicker} from './colorPicker';
 
 
@@ -16,7 +17,7 @@ class Home extends Component {
         }
     }
     componentDidMount() {
-        this.props.dispatch(fetchPostsIfNeeded(selectSubreddit))
+        this.props.dispatch(fetchPostsIfNeeded(changeSwitchState, './data.json'))
     }
     close() {
         if(!this.props.visibleTodos.lightSwitchState) this.props.dispatch(changeSwitchState(true))
@@ -158,7 +159,7 @@ class Home extends Component {
       <div className="lamp">
         <div id="lampTop" className = "lamp-btn" style={{height:!this.props.visibleTodos.lightSwitchState?"30%":"9.9166666rem"}}>
             <div className = "home-btn-timing">
-            <Link to="/app">
+            <Link to="/timing">
                 <img src = {require("../../img/pic-04xxhdpi.png")}/>
                 <h3>闹铃</h3>
             </Link>    
@@ -246,8 +247,7 @@ class Home extends Component {
 function select(state) {
   console.log(state)
   return {
-    visibleTodos: state.todos,
-    list: state.selectedSubreddit
+    visibleTodos: state.HomeReducer
   };
 }
 

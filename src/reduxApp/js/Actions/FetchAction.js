@@ -2,6 +2,16 @@
  * 封装异步数据流
  */
 
+import fetch from 'isomorphic-fetch';
+
+
+//异步数据流
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
+export const INVALIDATE_SUBREDDIT  = 'INVALIDATE_SUBREDDIT '
+
+
 function requestPosts(subreddit) {
   return {
     type: REQUEST_POSTS,
@@ -39,7 +49,7 @@ function shouldFetchPosts(state, subreddit) {
   }
 }
 
-export function fetchPostsIfNeeded(postsBySubreddit, url) {
+export function fetchPostsIfNeeded(subreddit, url) {
   return (dispatch, getState) => {
     if (shouldFetchPosts(getState(), subreddit)) {
       return dispatch(fetchPosts(subreddit, url))

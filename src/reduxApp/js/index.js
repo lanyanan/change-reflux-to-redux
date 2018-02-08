@@ -8,12 +8,18 @@ import Store from './reducers/reducers';
 import thunkMiddleware from 'redux-thunk'
 import {createLogger} from 'redux-logger'
 //import Home from './Home';
-import Loading from './components/loading';
+import Loading from './components/Loading';
 
 const AsyncHome = Loadable({
   loader: () => import("./components/Home"),
   loading: Loading
 });
+
+const AsyncTiming = Loadable({
+  loader: () => import("./components/Timing"),
+  loading: Loading
+});
+
 // import {Lamp} from './Lamp';
 // import {Reseting} from './Reseting';
 // import {Music} from './Music';
@@ -21,7 +27,7 @@ const AsyncHome = Loadable({
 // import {Timing} from './Timing';
 // import {Toast} from './toast';
 // import {Switch} from './Switch';
-import {Router, Route, Switch, BrowserRouter, HashRouter} from 'react-router-dom'
+import {Router, Route, Switch, BrowserRouter, HashRouter, Redirect} from 'react-router-dom'
 
 const loggerMiddleware = createLogger()
 
@@ -40,6 +46,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
 	        <HashRouter>
 	        	<Switch>
 		        	<Route exzact path="/home" component={AsyncHome} />
+		        	<Route exzact path="/timing" component={AsyncTiming} />
+		        	<Redirect path="/" to={{pathname: '/home'}} />
 		        </Switch>
 	        </HashRouter>
 	  	</Provider>		
