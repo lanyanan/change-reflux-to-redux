@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 
 // 下面不需要加#的导航路由但是服务器需要改造 用的h5的api
-// 当二级导航当刷新的时候不会出现404
+// 当二级导航当刷新的时候会出现404
 // 
 // document.addEventListener('DOMContentLoaded', ()=>{
 // 	render((   
