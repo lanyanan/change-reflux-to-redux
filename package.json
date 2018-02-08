@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-core/register --recursive",
     "public": "webpack -p --config webpack.public.config.js --progress --profile --colors",
     "start-redux-m": "export NODE_EVN=redux&& webpack-dev-server --open",
     "start-redux-w": "set NODE_EVN=redux&& webpack-dev-server --open",
     "start-reflux-m": "export NODE_EVN=reflux&& webpack-dev-server --open",
     "start-reflux-w": "set NODE_EVN=reflux&& webpack-dev-server --open",
+    "test:watch": "npm test -- --watch",
     "watch": "webpack --watch",
     "build": "webpack -p"
   },
@@ -36,6 +37,8 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "expect": "^22.2.0",
+    "mocha": "^5.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
