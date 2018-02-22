@@ -20,6 +20,11 @@ const AsyncTiming = Loadable({
   loading: Loading
 });
 
+const AsyncList = Loadable({
+  loader: () => import("./components/List"),
+  loading: Loading
+});
+
 // import {Lamp} from './Lamp';
 // import {Reseting} from './Reseting';
 // import {Music} from './Music';
@@ -47,6 +52,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 	        	<Switch>
 		        	<Route exzact path="/home" component={AsyncHome} />
 		        	<Route exzact path="/timing" component={AsyncTiming} />
+		        	<Route exzact path="/list" component={AsyncList} />
 		        	<Redirect path="/" to={{pathname: '/home'}} />
 		        </Switch>
 	        </HashRouter>
